@@ -1,6 +1,12 @@
 package list
 
-import "log"
+import (
+	"errors"
+)
+
+var (
+	errSlistNotMatch = errors.New("SlistNotMatch")
+)
 
 // Node -
 type Node struct {
@@ -44,9 +50,12 @@ func (sl *Slist) Len() int {
 }
 
 // Next -
-func (node *Node) Next() *Node {
-	// 最后一个节点会报错
-	return node.next
+func (node *Node) Next() (*Node, error) {
+	if node.next != nil {
+		return node.next, nil
+	}
+
+	return nil, errors.New("no next node")
 }
 
 func (sl *Slist) insert(newNode, at *Node) *Node {
@@ -58,9 +67,9 @@ func (sl *Slist) insert(newNode, at *Node) *Node {
 }
 
 // InsertAfter -
-func (sl *Slist) InsertAfter(value interface{}, node *Node) *Node {
+func (sl *Slist) InsertAfter(value interface{}, node *Node) (*Node, error) {
 	if node.slist != sl {
-		return nil
+		return nil, errSlistNotMatch
 	}
 
 	n := &Node{
@@ -68,13 +77,13 @@ func (sl *Slist) InsertAfter(value interface{}, node *Node) *Node {
 		slist: sl,
 	}
 
-	return sl.insert(n, node)
+	return sl.insert(n, node), nil
 }
 
-// InsertBefore -
-func (sl *Slist) InsertBefore(value interface{}, node *Node) *Node {
+// InsertBefore - not support inserting in the header
+func (sl *Slist) InsertBefore(value interface{}, node *Node) (*Node, error) {
 	if node.slist != sl {
-		return nil
+		return nil, errSlistNotMatch
 	}
 
 	n := &Node{
@@ -83,22 +92,13 @@ func (sl *Slist) InsertBefore(value interface{}, node *Node) *Node {
 	}
 
 	if node == &sl.root {
-		//todo finish this bug!
-		n.next = node
-
-		log.Println(n.next.Value) // print nil
-		// ???
-		sl.root = *n
-		log.Println(n.next.next.Value) // print nil
-
-		return n
+		//todo
 	}
 
 	prev := sl.findPrevNode(node)
 
-	sl.insert(n, prev)
+	return sl.insert(n, prev), nil
 
-	return n
 }
 
 func (sl *Slist) remove(prev, node *Node) *Node {
@@ -112,23 +112,21 @@ func (sl *Slist) remove(prev, node *Node) *Node {
 }
 
 // Remove -
-func (sl *Slist) Remove(node *Node) *Node {
+func (sl *Slist) Remove(node *Node) (*Node, error) {
 	if node.slist != sl {
-		return nil
+		return nil, errSlistNotMatch
 	}
 
 	if node == &sl.root {
-		// root 会不会成为垃圾，一直占据内存
 		sl.root = *sl.root.next
-		return &sl.root
+		return &sl.root, nil
 	}
 
 	prev := sl.findPrevNode(node)
-	return sl.remove(prev, node)
+	return sl.remove(prev, node), nil
 }
 
 func (sl *Slist) findPrevNode(node *Node) *Node {
-	// 不属于同一链表，直接返回空值
 	if node.slist != sl {
 		return nil
 	}
@@ -136,11 +134,11 @@ func (sl *Slist) findPrevNode(node *Node) *Node {
 	goal := &sl.root
 
 	for {
-		// 找到目标节点
+		// find goal
 		if goal.next == node {
 			return goal
 
-			// 无目标节点
+			// not find goal
 		} else if goal.next == nil {
 			return nil
 		}
