@@ -1,4 +1,11 @@
-package list
+/*
+	单向链表解决了数组插入，删除的消耗
+	但是因为单向链表中节点无前驱节点的信息，因此在尾部进行插入和删除所花费的支出和数组一样，
+	而且因为无前驱节点的信息，因此在向前插入需要进行遍历，从而引入双向链表
+	单向链表不存在索引，其查询效率不如数组
+*/
+
+package slist
 
 import (
 	"errors"
@@ -17,20 +24,20 @@ type Node struct {
 
 // Slist -
 type Slist struct {
-	root Node
+	root *Node
 	len  int
-}
-
-// Slister -
-type Slister interface {
 }
 
 // Init -
 func (sl *Slist) Init() *Slist {
-	sl.root.next = nil
-	sl.root.Value = nil
-	sl.root.slist = sl
-	sl.len = 1
+
+	sl.root = &Node{
+		Value: "root",
+		slist: sl,
+		next:  nil,
+	}
+
+	sl.len = 0
 	return sl
 }
 
@@ -39,9 +46,9 @@ func NewSlist() *Slist {
 	return new(Slist).Init()
 }
 
-// GetRoot -
-func (sl *Slist) GetRoot() *Node {
-	return &sl.root
+// Root -
+func (sl *Slist) Root() *Node {
+	return sl.root
 }
 
 // Len -
@@ -50,12 +57,11 @@ func (sl *Slist) Len() int {
 }
 
 // Next -
-func (node *Node) Next() (*Node, error) {
+func (node *Node) Next() *Node {
 	if node.next != nil {
-		return node.next, nil
+		return node.next
 	}
-
-	return nil, errors.New("no next node")
+	return nil
 }
 
 func (sl *Slist) insert(newNode, at *Node) *Node {
@@ -91,8 +97,11 @@ func (sl *Slist) InsertBefore(value interface{}, node *Node) (*Node, error) {
 		slist: sl,
 	}
 
-	if node == &sl.root {
-		//todo
+	if node == sl.root {
+		n.next = node
+		sl.root = n
+		sl.len++
+		return n, nil
 	}
 
 	prev := sl.findPrevNode(node)
@@ -117,9 +126,9 @@ func (sl *Slist) Remove(node *Node) (*Node, error) {
 		return nil, errSlistNotMatch
 	}
 
-	if node == &sl.root {
-		sl.root = *sl.root.next
-		return &sl.root, nil
+	if node == sl.root {
+		sl.root = sl.root.next
+		return sl.root, nil
 	}
 
 	prev := sl.findPrevNode(node)
@@ -131,7 +140,7 @@ func (sl *Slist) findPrevNode(node *Node) *Node {
 		return nil
 	}
 
-	goal := &sl.root
+	goal := sl.root
 
 	for {
 		// find goal
