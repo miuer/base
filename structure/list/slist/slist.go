@@ -19,7 +19,6 @@ var (
 type Node struct {
 	Value interface{}
 	next  *Node
-	slist *Slist
 }
 
 // Slist -
@@ -33,7 +32,6 @@ func (sl *Slist) Init() *Slist {
 
 	sl.root = &Node{
 		Value: "root",
-		slist: sl,
 		next:  nil,
 	}
 
@@ -74,13 +72,9 @@ func (sl *Slist) insert(newNode, at *Node) *Node {
 
 // InsertAfter -
 func (sl *Slist) InsertAfter(value interface{}, node *Node) (*Node, error) {
-	if node.slist != sl {
-		return nil, errSlistNotMatch
-	}
 
 	n := &Node{
 		Value: value,
-		slist: sl,
 	}
 
 	return sl.insert(n, node), nil
@@ -88,13 +82,9 @@ func (sl *Slist) InsertAfter(value interface{}, node *Node) (*Node, error) {
 
 // InsertBefore - not support inserting in the header
 func (sl *Slist) InsertBefore(value interface{}, node *Node) (*Node, error) {
-	if node.slist != sl {
-		return nil, errSlistNotMatch
-	}
 
 	n := &Node{
 		Value: value,
-		slist: sl,
 	}
 
 	if node == sl.root {
@@ -104,7 +94,7 @@ func (sl *Slist) InsertBefore(value interface{}, node *Node) (*Node, error) {
 		return n, nil
 	}
 
-	prev := sl.findPrevNode(node)
+	prev := sl.FindPrevNode(node)
 
 	return sl.insert(n, prev), nil
 
@@ -114,7 +104,6 @@ func (sl *Slist) remove(prev, node *Node) *Node {
 	prev.next = node.next
 	node.Value = nil
 	node.next = nil
-	node.slist = nil
 	sl.len--
 
 	return node
@@ -122,24 +111,18 @@ func (sl *Slist) remove(prev, node *Node) *Node {
 
 // Remove -
 func (sl *Slist) Remove(node *Node) (*Node, error) {
-	if node.slist != sl {
-		return nil, errSlistNotMatch
-	}
 
 	if node == sl.root {
 		sl.root = sl.root.next
 		return sl.root, nil
 	}
 
-	prev := sl.findPrevNode(node)
+	prev := sl.FindPrevNode(node)
 	return sl.remove(prev, node), nil
 }
 
-func (sl *Slist) findPrevNode(node *Node) *Node {
-	if node.slist != sl {
-		return nil
-	}
-
+// FindPrevNode -
+func (sl *Slist) FindPrevNode(node *Node) *Node {
 	goal := sl.root
 
 	for {

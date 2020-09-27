@@ -8,8 +8,6 @@ var (
 
 // Node -
 type Node struct {
-	dl *Dlist
-
 	next, prev *Node
 	Value      interface{}
 }
@@ -23,8 +21,8 @@ type Dlist struct {
 // Init -
 func (dl *Dlist) Init() *Dlist {
 	dl.len = 0
-	dl.head = &Node{dl: dl, Value: "head"}
-	dl.tail = &Node{dl: dl, Value: "tail"}
+	dl.head = &Node{Value: "head"}
+	dl.tail = &Node{Value: "tail"}
 	dl.head.next = dl.tail
 	dl.head.prev = nil
 	dl.tail.prev = dl.head
@@ -83,11 +81,8 @@ func (dl *Dlist) insert(newNode, at *Node) *Node {
 
 // InsertAfter -
 func (dl *Dlist) InsertAfter(value interface{}, node *Node) (*Node, error) {
-	if node.dl != dl {
-		return nil, errDlistNotMatch
-	}
+
 	n := &Node{
-		dl:    dl,
 		Value: value,
 	}
 
@@ -106,11 +101,8 @@ func (dl *Dlist) InsertAfter(value interface{}, node *Node) (*Node, error) {
 
 // InsertBefore -
 func (dl *Dlist) InsertBefore(value interface{}, node *Node) (*Node, error) {
-	if node.dl != dl {
-		return nil, errDlistNotMatch
-	}
+
 	n := &Node{
-		dl:    dl,
 		Value: value,
 	}
 
@@ -139,9 +131,6 @@ func (dl *Dlist) remove(node *Node) *Node {
 
 // Remove -
 func (dl *Dlist) Remove(node *Node) (*Node, error) {
-	if node.dl != dl {
-		return nil, errDlistNotMatch
-	}
 
 	if node.prev == nil {
 		node.next.prev = nil

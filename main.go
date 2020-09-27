@@ -1,12 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
-	fmt.Println("hello world")
+	var str = []string{}
 
-	var a = []int{1, 2, 3}
+	str = str[1:]
 
-	fmt.Println(a[-1])
-
+	fmt.Println(str[0])
 }
