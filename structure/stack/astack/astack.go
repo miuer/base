@@ -8,55 +8,60 @@ var (
 	errStackEmpty = errors.New("StackIsEmpty")
 )
 
-// Lstatck -
-type Lstatck struct {
+// Astack -
+type Astack struct {
 	array []interface{}
 	top   int
 }
 
 // Init -
-func (l *Lstatck) Init() *Lstatck {
-	l.array = l.array[:0]
-	l.top = -1
+func (as *Astack) Init() *Astack {
+	as.array = as.array[:0]
+	as.top = -1
 
-	return l
+	return as
 }
 
 // NewAstack -
-func NewAstack() *Lstatck {
-	return new(Lstatck).Init()
+func NewAstack() *Astack {
+	return new(Astack).Init()
 }
 
 // Push -
-func (l *Lstatck) Push(value interface{}) (*Lstatck, error) {
-	return l.push(value), nil
+func (as *Astack) Push(value interface{}) (*Astack, error) {
+	return as.push(value), nil
 }
 
-func (l *Lstatck) push(value interface{}) *Lstatck {
-	l.array = append(l.array, value)
-	l.top++
-	return l
+func (as *Astack) push(value interface{}) *Astack {
+	as.array = append(as.array, value)
+	as.top++
+	return as
 }
 
 // Pop -
-func (l *Lstatck) Pop() (interface{}, *Lstatck, error) {
-	top, err := l.Top()
-	ls := l.pop()
+func (as *Astack) Pop() (interface{}, *Astack, error) {
+	top, err := as.Top()
+	astack := as.pop()
 
-	return top, ls, err
+	return top, astack, err
 }
 
-func (l *Lstatck) pop() *Lstatck {
-	l.array = l.array[:l.top]
-	l.top--
-	return l
+func (as *Astack) pop() *Astack {
+	as.array = as.array[:as.top]
+	as.top--
+	return as
 }
 
 // Top -
-func (l *Lstatck) Top() (interface{}, error) {
-	if l.top > -1 {
-		return l.array[l.top], nil
+func (as *Astack) Top() (interface{}, error) {
+	if as.top > -1 {
+		return as.array[as.top], nil
 	}
 
 	return nil, errStackEmpty
+}
+
+// IsEmpty -
+func (as *Astack) IsEmpty() bool {
+	return as.top == -1
 }

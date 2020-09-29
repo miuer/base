@@ -65,3 +65,24 @@ func TestRemove(t *testing.T) {
 		break
 	}
 }
+
+func TestSwap(t *testing.T) {
+	sl := slist.NewSlist()
+
+	root := sl.Root()
+
+	n1, _ := sl.InsertAfter("3", root)
+	node, _ := sl.InsertAfter("2", root)
+	sl.InsertAfter("1", root)
+
+	t.Log(sl.Root().Next().Value, sl.Root().Next().Next().Value, sl.Root().Next().Next().Next().Value)
+
+	sl.Swap(node)
+
+	t.Log(sl.Root().Next().Value, sl.Root().Next().Next().Value, sl.Root().Next().Next().Next().Value)
+
+	sl.Swap(n1)
+
+	t.Log(sl.Root().Next().Value, sl.Root().Next().Next().Value, sl.Root().Next().Next().Next().Value)
+
+}

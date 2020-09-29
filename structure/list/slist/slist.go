@@ -137,3 +137,23 @@ func (sl *Slist) FindPrevNode(node *Node) *Node {
 		goal = goal.next
 	}
 }
+
+func (sl *Slist) swap(node *Node) *Node {
+
+	prev := sl.FindPrevNode(node)
+	next := node.Next()
+
+	prev.next = next
+	node.next = next.next
+	next.next = node
+	return node
+}
+
+// Swap -
+func (sl *Slist) Swap(node *Node) (*Node, error) {
+	if sl.len < 1 || node.Next() == nil {
+		return node, nil
+	}
+
+	return sl.swap(node), nil
+}

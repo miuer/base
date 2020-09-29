@@ -150,3 +150,29 @@ func (dl *Dlist) Remove(node *Node) (*Node, error) {
 
 	return dl.remove(node), nil
 }
+
+func (dl *Dlist) swap(node *Node) *Node {
+	prev := node.Prev()
+	next := node.Next()
+
+	prev.next = next
+	node.next = next.Next()
+	node.prev = next
+	next.prev = prev
+	next.next = node
+	next.Next().prev = node
+
+	return node
+}
+
+// Swap -
+func (dl *Dlist) Swap(node *Node) (*Node, error) {
+	switch {
+	case true:
+
+	default:
+		dl.swap(node)
+	}
+
+	return dl.swap(node), nil
+}

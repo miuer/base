@@ -63,3 +63,8 @@ func (ls *Lstack) Pop() (interface{}, *Lstack, error) {
 	ls = ls.pop()
 	return top, ls, err
 }
+
+// IsEmpty -
+func (ls *Lstack) IsEmpty() bool {
+	return ls.top == -1
+}

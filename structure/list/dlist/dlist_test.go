@@ -58,3 +58,40 @@ func TestRemove(t *testing.T) {
 		break
 	}
 }
+
+func TestSwap(t *testing.T) {
+	dl := dlist.NewDlist()
+
+	afterHead, _ := dl.InsertAfter("after head", dl.Head())
+	dl.InsertBefore("before head", dl.Head())
+	dl.InsertBefore("before tail", dl.Tail())
+	dl.InsertAfter("after tail", dl.Tail())
+
+	n := dl.Head()
+	for {
+		if n.Next() != nil {
+			t.Log(n.Value)
+			n = n.Next()
+			continue
+		}
+
+		t.Log(n.Value)
+		break
+	}
+
+	t.Logf("\n")
+
+	dl.Swap(afterHead)
+
+	n = dl.Head()
+	for {
+		if n.Next() != nil {
+			t.Log(n.Value)
+			n = n.Next()
+			continue
+		}
+
+		t.Log(n.Value)
+		break
+	}
+}
