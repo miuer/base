@@ -2,6 +2,7 @@ package tree
 
 import (
 	"errors"
+	"fmt"
 )
 
 var (
@@ -13,8 +14,8 @@ type Node struct {
 	// index > 0
 	index int
 	Value interface{}
-	Left  *Node
-	Right *Node
+	left  *Node
+	right *Node
 }
 
 // BST -
@@ -24,13 +25,29 @@ type BST struct {
 
 // Init -
 func (bst *BST) Init() *BST {
-	bst.root = &Node{}
+	bst.root = &Node{0, nil, nil, nil}
+
 	return bst
 }
 
 // NewBinarySearchTree -
 func NewBinarySearchTree() *BST {
 	return new(BST).Init()
+}
+
+// Root -
+func (bst *BST) Root() *Node {
+	return bst.root
+}
+
+// Left -
+func (node *Node) Left() *Node {
+	return node.left
+}
+
+// Right -
+func (node *Node) Right() *Node {
+	return node.right
 }
 
 func (bst *BST) contains(node *Node, index int) bool {
@@ -40,9 +57,9 @@ func (bst *BST) contains(node *Node, index int) bool {
 
 	switch {
 	case index < node.index:
-		return bst.contains(node.Left, index)
+		return bst.contains(node.Left(), index)
 	case node.index < index:
-		return bst.contains(node.Right, index)
+		return bst.contains(node.right, index)
 	default:
 		return true
 	}
@@ -58,17 +75,17 @@ func (bst *BST) findMin(node *Node) *Node {
 		return nil
 	}
 
-	if node.Left == nil {
+	if node.Left() == nil {
 		return node
 	}
 
-	return bst.findMin(node.Left)
+	return bst.findMin(node.Left())
 }
 
 func (bst *BST) findMinNonRecursive(node *Node) *Node {
 	if node != nil {
-		for node.Left != nil {
-			node = node.Left
+		for node.left != nil {
+			node = node.Left()
 		}
 	}
 
@@ -85,17 +102,17 @@ func (bst *BST) findMax(node *Node) *Node {
 		return nil
 	}
 
-	if node.Right == nil {
+	if node.Right() == nil {
 		return node
 	}
 
-	return bst.findMax(node.Right)
+	return bst.findMax(node.Right())
 }
 
 func (bst *BST) findMaxNonRecursive(node *Node) *Node {
 	if node != nil {
-		for node.Right != nil {
-			node = node.Right
+		for node.right != nil {
+			node = node.right
 		}
 	}
 
@@ -113,28 +130,93 @@ func (bst *BST) Insert(index int, value interface{}) bool {
 		return false
 	}
 
-	node := &Node{index: index, Value: value}
+	node := &Node{index: index, Value: value, left: nil, right: nil}
 
 	if bst.root.index == 0 {
 		bst.root = node
 		return true
 	}
 
-	return bst.insert(bst.root, node)
+	return bst.insert(bst.Root(), node)
 }
 
 func (bst *BST) insert(node, newNode *Node) bool {
 	if newNode.index < node.index {
-		if node.Left == nil {
-			node.Left = newNode
+		if node.left == nil {
+			node.left = newNode
+			return true
 		}
-		bst.insert(node.Left, newNode)
+		bst.insert(node.Left(), newNode)
 	} else {
-		if node.Right == nil {
-			node.Right = newNode
+		if node.right == nil {
+			node.right = newNode
+			return true
 		}
-		bst.insert(node.Right, newNode)
+		bst.insert(node.right, newNode)
 	}
 
 	return true
+}
+
+// Remove -
+func (bst *BST) Remove(index int) bool {
+	if node := bst.remove(bst.root, index); node != nil {
+		return true
+	}
+
+	return false
+}
+
+func (bst *BST) remove(node *Node, index int) *Node {
+	if node == nil {
+		return nil
+	}
+
+	if index < node.index {
+		node.left = bst.remove(node.left, index)
+		return node
+	} else if node.index < index {
+		node.right = bst.remove(node.right, index)
+		return node
+	}
+
+	if node.left != nil && node.right != nil {
+		min := bst.findMin(node.Right())
+		node.Value = min.Value
+		node.index = min.index
+
+		node.right = bst.removeMin(node.right)
+		return node
+	}
+
+	if node.left != nil {
+		return node.left
+	}
+
+	return node.right
+}
+
+func (bst *BST) removeMin(node *Node) *Node {
+	if node.left == nil {
+		var right *Node
+		right = node.right
+		node.right = nil
+		return right
+	}
+
+	node.left = bst.removeMin(node.left)
+
+	return node
+}
+
+// Print -
+func (bst *BST) Print(node *Node) {
+	if node == nil {
+		return
+	}
+
+	bst.Print(node.left)
+	fmt.Printf("%d ", node.index)
+	bst.Print(node.right)
+
 }
