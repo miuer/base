@@ -138,6 +138,11 @@ func (sl *Slist) FindPrevNode(node *Node) *Node {
 	}
 }
 
+// IsEmpty -
+func (sl *Slist) IsEmpty() bool {
+	return sl.len == 0
+}
+
 func (sl *Slist) swap(node *Node) *Node {
 
 	prev := sl.FindPrevNode(node)
