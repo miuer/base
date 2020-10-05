@@ -228,7 +228,7 @@ func (bt *BinaryTree) PostorderNonRecursive() {
 	bt.postorderNonRecursive(bt.Root())
 }
 
-func (bt *BinaryTree) levelNonRecursive(node *Node) {
+func (bt *BinaryTree) level(node *Node) {
 	q := aqueue.NewAqueue()
 	q.EnQueue(node)
 
@@ -247,8 +247,11 @@ func (bt *BinaryTree) levelNonRecursive(node *Node) {
 	}
 }
 
-// LevelNonRecursive -
-func (bt *BinaryTree) LevelNonRecursive() {
+// Level -
+func (bt *BinaryTree) Level() {
 	bt.traverse = bt.traverse[:0]
-	bt.levelNonRecursive(bt.Root())
+	bt.level(bt.Root())
 }
+
+// DFS - stact || recursive
+// BFS - queue

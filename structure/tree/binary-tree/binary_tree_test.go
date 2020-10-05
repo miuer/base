@@ -31,7 +31,7 @@ func TestInsert(t *testing.T) {
 	rightLeftLeftChild.Insert("d", 0)
 	rightLeftLeftChild.Insert("e", 1)
 
-	bt.LevelNonRecursive()
+	bt.Inorder()
 	bt.Print()
 
 	fmt.Println()
