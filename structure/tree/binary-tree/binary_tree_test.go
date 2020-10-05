@@ -1,6 +1,7 @@
 package tree_test
 
 import (
+	"fmt"
 	"testing"
 
 	tree "github.com/miuer/base/structure/tree/binary-tree"
@@ -30,6 +31,12 @@ func TestInsert(t *testing.T) {
 	rightLeftLeftChild.Insert("d", 0)
 	rightLeftLeftChild.Insert("e", 1)
 
-	bt.Inorder()
+	bt.LevelNonRecursive()
 	bt.Print()
+
+	fmt.Println()
+
+	bt.Level()
+	bt.Print()
+
 }

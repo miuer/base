@@ -5,6 +5,8 @@ import (
 	"fmt"
 
 	"github.com/miuer/base/structure/stack/astack"
+
+	"github.com/miuer/base/structure/queue/aqueue"
 )
 
 var (
@@ -224,4 +226,29 @@ func (bt *BinaryTree) postorderNonRecursive(node *Node) {
 func (bt *BinaryTree) PostorderNonRecursive() {
 	bt.traverse = bt.traverse[:0]
 	bt.postorderNonRecursive(bt.Root())
+}
+
+func (bt *BinaryTree) levelNonRecursive(node *Node) {
+	q := aqueue.NewAqueue()
+	q.EnQueue(node)
+
+	for !q.IsEmpty() {
+		value, _, _ := q.DeQueue()
+		n := value.(*Node)
+		bt.traverse = append(bt.traverse, n)
+
+		if n.Left != nil {
+			q.EnQueue(n.Left)
+		}
+
+		if n.Right != nil {
+			q.EnQueue(n.Right)
+		}
+	}
+}
+
+// LevelNonRecursive -
+func (bt *BinaryTree) LevelNonRecursive() {
+	bt.traverse = bt.traverse[:0]
+	bt.levelNonRecursive(bt.Root())
 }

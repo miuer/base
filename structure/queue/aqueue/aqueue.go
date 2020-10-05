@@ -60,3 +60,12 @@ func (aq *Aqueue) DeQueue() (interface{}, *Aqueue, error) {
 
 	return top, queue, err
 }
+
+// IsEmpty -
+func (aq *Aqueue) IsEmpty() bool {
+	if len(aq.queue) == 0 {
+		return true
+	}
+
+	return false
+}
