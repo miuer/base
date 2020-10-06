@@ -3,6 +3,7 @@ package tree
 import (
 	"errors"
 	"fmt"
+	"math"
 
 	"github.com/miuer/base/structure/stack/astack"
 
@@ -98,6 +99,19 @@ func (n *Node) remove() error {
 	*/
 
 	return nil
+}
+
+func (bt *BinaryTree) height(node *Node) float64 {
+	if node == nil {
+		return -1
+	}
+
+	return 1 + math.Max(bt.height(node.Left), bt.height(node.Right))
+}
+
+// Height -
+func (bt *BinaryTree) Height(node *Node) int {
+	return int(bt.height(bt.Root()))
 }
 
 func (bt *BinaryTree) preorder(node *Node) {

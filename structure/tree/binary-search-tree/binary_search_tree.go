@@ -218,5 +218,4 @@ func (bst *BST) Print(node *Node) {
 	bst.Print(node.left)
 	fmt.Printf("%d ", node.index)
 	bst.Print(node.right)
-
 }

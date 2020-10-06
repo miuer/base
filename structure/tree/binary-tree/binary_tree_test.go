@@ -39,4 +39,6 @@ func TestInsert(t *testing.T) {
 	bt.Level()
 	bt.Print()
 
+	fmt.Println(bt.Height(bt.Root()))
+
 }
