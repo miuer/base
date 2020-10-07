@@ -1,5 +1,9 @@
 package tree
 
+import (
+	"fmt"
+)
+
 // Node -
 type Node struct {
 	height int
@@ -24,6 +28,11 @@ func (avl *AVLTree) Init() *AVLTree {
 // NewAVLTree -
 func NewAVLTree() *AVLTree {
 	return new(AVLTree).Init()
+}
+
+// Root -
+func (avl *AVLTree) Root() *Node {
+	return avl.root
 }
 
 // Height -
@@ -70,9 +79,9 @@ func (avl *AVLTree) rotateWithRightChild(k *Node) *Node {
 
 // α.left ->rotateWithRightChild
 // α -> rotateWithLeftChild
-func (avl *AVLTree) doubleWithLeftChild(k *Node) {
+func (avl *AVLTree) doubleWithLeftChild(k *Node) *Node {
 	k.left = avl.rotateWithRightChild(k.left)
-	avl.rotateWithLeftChild(k)
+	return avl.rotateWithLeftChild(k)
 }
 
 // right left
@@ -82,9 +91,9 @@ func (avl *AVLTree) doubleWithLeftChild(k *Node) {
 
 // α.right ->rotateWithLeftChild
 // α -> rotateWithRightChild
-func (avl *AVLTree) doubleWithRightChild(k *Node) {
+func (avl *AVLTree) doubleWithRightChild(k *Node) *Node {
 	k.right = avl.rotateWithLeftChild(k.right)
-	avl.rotateWithRightChild(k)
+	return avl.rotateWithRightChild(k)
 }
 
 func max(a, b int) int {
@@ -96,9 +105,52 @@ func max(a, b int) int {
 }
 
 // Insert -
-func (avl *AVLTree) Insert() {
+func (avl *AVLTree) Insert(index int, value interface{}) {
+	node := &Node{
+		index: index,
+		Value: value,
+	}
+
+	avl.root = avl.insert(avl.Root(), node)
 }
 
-func (avl *AVLTree) insert() {
+func (avl *AVLTree) insert(node, newNode *Node) *Node {
+	if node == nil {
+		node = newNode
+	}
 
+	if newNode.index < node.index {
+		node.left = avl.insert(node.left, newNode)
+		if node.left.Height()-node.right.Height() == 2 {
+			if newNode.index < node.left.index {
+				node = avl.rotateWithLeftChild(node)
+			} else {
+				node = avl.doubleWithLeftChild(node)
+			}
+		}
+	} else if node.index < newNode.index {
+		node.right = avl.insert(node.right, newNode)
+		if node.right.Height()-node.left.Height() == 2 {
+			if node.right.index < newNode.index {
+				node = avl.rotateWithRightChild(node)
+			} else {
+				node = avl.doubleWithRightChild(node)
+			}
+		}
+	}
+
+	node.height = max(node.left.Height(), node.right.Height()) + 1
+
+	return node
+}
+
+// Print -
+func (avl *AVLTree) Print(node *Node) {
+	if node == nil {
+		return
+	}
+
+	avl.Print(node.left)
+	fmt.Printf("%d ", node.index)
+	avl.Print(node.right)
 }
