@@ -2,7 +2,7 @@ package heap
 
 // Node -
 type Node struct {
-	index uint64
+	index int64
 	value interface{}
 }
 
@@ -14,7 +14,7 @@ type BinaryHeap struct {
 // BinaryHeaper -
 type BinaryHeaper interface {
 	Init() *BinaryHeap
-	Insert(uint64, interface{}) bool
+	Insert(int64, interface{}) bool
 	DeleteMin() (*Node, error)
 }
 
@@ -36,7 +36,11 @@ func (bh *BinaryHeap) Heap() []*Node {
 }
 
 // Insert -
-func (bh *BinaryHeap) Insert(index uint64, value interface{}) bool {
+func (bh *BinaryHeap) Insert(index int64, value interface{}) bool {
+	if index < 1 {
+		return false
+	}
+
 	node := &Node{index, value}
 
 	bh.insert(node)
@@ -91,4 +95,10 @@ func (bh *BinaryHeap) percolateDown(index int) {
 	}
 
 	bh.heap[index] = tmp
+}
+
+// Remove -
+func (bh *BinaryHeap) Remove() *Node {
+
+	return nil
 }

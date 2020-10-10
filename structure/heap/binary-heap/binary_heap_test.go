@@ -8,7 +8,7 @@ import (
 
 func TestInsert(t *testing.T) {
 
-	var arr []uint64
+	var arr []int64
 
 	arr = append(arr, 13, 14, 16, 19, 21, 19, 68, 65, 26, 32, 31)
 
