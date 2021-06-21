@@ -3,7 +3,7 @@ package reverse_test
 import (
 	"testing"
 
-	"github.com/miuer/base/string/reverse"
+	"github.com/miuer/base/algorithm/string/reverse"
 )
 
 func TestReverse(t *testing.T) {
