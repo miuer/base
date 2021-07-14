@@ -5,7 +5,5 @@ import (
 )
 
 func main() {
-	str := "biEB5mWvhs7iPWn"
-
-	fmt.Println(len(str))
+	fmt.Println("hello world")
 }
