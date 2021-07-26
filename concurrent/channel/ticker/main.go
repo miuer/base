@@ -5,7 +5,6 @@ import (
 	"time"
 )
 
-//	适用于定时触发器
 func main() {
 	intChan := make(chan int, 1)
 	ticker := time.NewTicker(time.Second)

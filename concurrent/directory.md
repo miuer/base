@@ -1,7 +1,22 @@
 # 目录
 - 进程：[进程创建](./process/start/main.go)
 - [进程通信]
-  - [pipe](./process/comm/pipe/main.go)
-  - [signal](./process/comm/signal/main.go)
-  - [socket](./process/comm/socket/main.go)
-  
+  - [管道-pipe](./process/comm/pipe/main.go)
+  - [信号-signal](./process/comm/signal/main.go)
+  - [套接字-socket](./process/comm/socket/main.go)
+- 例程：[goroutine]
+  - [例程创建](./goroutine/base/main.go)
+  - [休眠-sleep](./goroutine/sleep/main.go)
+  - [循环-for](./goroutine/for/main.go)
+- 通道：[channel]
+  - [hello world](./channel/hello/main.go)
+  - [接收-发送](./channel/base/main.go)
+  - [生产者-消费者](./channel/bbp/main.go) 
+  - [值传递](./channel/value/main.go)
+  - [缓冲通道](./channel/buffer/main.go)
+  - [长度和容量](./channel/len_cap/main.go)
+  - [单向通道](./channel/one_way/main.go)
+  - [循环和选择](./channel/for_select/mian.go)
+  - [通道关闭](./channel/close/main.go)
+  - [定时器](./channel/timer/main.go)
+  - [断续器](./channel/ticker/main.go)
