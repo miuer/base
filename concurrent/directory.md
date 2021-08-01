@@ -20,3 +20,5 @@
   - [通道关闭](./channel/close/main.go)
   - [定时器](./channel/timer/main.go)
   - [断续器](./channel/ticker/main.go)
+- 同步：{sync}
+  - 
