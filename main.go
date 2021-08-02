@@ -1,5 +1,6 @@
 package main
 
+<<<<<<< HEAD
 import (
 	"fmt"
 )
